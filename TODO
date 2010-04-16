@@ -1,0 +1,8 @@
+TODO List
+---------
+
+ * add oattribute and olink.
+ * make a difference between 'store' and 'restore' in the storage server.
+ * find a new way to have different backends for the storage server.
+ * implements a CouchDB backend.
+
