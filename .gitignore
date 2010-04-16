@@ -1,0 +1,7 @@
+doc/
+ebin/
+*.swp
+*.dump
+cover
+edoc-info
+orange.dets
