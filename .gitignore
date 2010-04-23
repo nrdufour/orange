@@ -1,4 +1,4 @@
-doc/
+doc/*.html
 ebin/
 *.swp
 *.dump
