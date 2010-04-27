@@ -11,11 +11,18 @@
 %% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
+%%
+%% @author Nicolas R Dufour <nrdufour@gmail.com>
+%% @copyright 2009-2010 Nicolas R Dufour.
+
+-type adtType()  :: class | attribute | link | object.
+-type adtNames() :: [string()].
+-type adtState() :: alive | frozen | destroyed | none.
 
 -record(meta, {
-    type = unknown,
-    names = [],
-    state = none
+    type  = unknown :: adtType(),
+    names = []      :: adtNames(),
+    state = none    :: adtState()
 }).
 
 -record(adt, {
