@@ -19,56 +19,56 @@
 -behavior(supervisor).
 -author('Nicolas R Dufour <nrdufour@gmail.com>').
 
--export([start/0, start_in_shell_for_testing/0, start_link/1, init/1]).
+-export([start_link/0, init/1]).
 
-start() ->
-    spawn(fun() ->
-        supervisor:start_link({local, ?MODULE}, ?MODULE, _Arg = [])
-    end).
+start_link() ->
+    supervisor:start_link(?MODULE, nil).
 
-start_in_shell_for_testing() ->
-    {ok, Pid} = supervisor:start_link({local, ?MODULE}, ?MODULE, _Arg = []),
-    unlink(Pid).
-
-start_link(Args) ->
-    supervisor:start_link({local, ?MODULE}, ?MODULE, Args).
-
-init([]) ->
+init(_InitArgs) ->
     %% Install my personal error handler
     %%gen_event:swap_handler(alarm_handler,
     %%            {alarm_handler, swap},
     %%            {my_alarm_handler, xyz}),
-    
-    {ok, {{one_for_one, 3, 10},
-        [{tag1,
+
+    ClassManager = {orange_class,
             {orange_class, start_link, []},
             permanent,
             10000,
             worker,
-            [orange_class]},
-        {tag2,
+	    [orange_class]},
+    
+    AttributeManager = {orange_attribute,
             {orange_attribute, start_link, []},
             permanent,
             10000,
             worker,
-            [orange_attribute]},
-        {tag3,
+	    [orange_attribute]},
+    
+    LinkManager = {orange_link,
             {orange_link, start_link, []},
             permanent,
             10000,
             worker,
-            [orange_link]},
-        {tag4,
+	    [orange_link]},
+    
+    ObjectManager = {orange_object,
             {orange_object, start_link, []},
             permanent,
             10000,
             worker,
-            [orange_object]},
-        {tag5,
+	    [orange_object]},
+    
+    StorageManager = {orange_storage_server,
             {orange_storage_server, start_link, []},
             permanent,
             10000,
             worker,
-            [orange_storage_server]}
-    ]}}.
+	    [orange_storage_server]},
+
+    Strategies = {
+        {one_for_one, 10, 3600},
+        [ClassManager, AttributeManager, LinkManager, ObjectManager, StorageManager]
+    },
+    
+    {ok, Strategies}.
 

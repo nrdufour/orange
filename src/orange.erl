@@ -31,7 +31,7 @@
 start(_Type, StartArgs) ->
     case start_apps([crypto, sasl]) of
         ok ->
-            orange_sup:start_link(StartArgs);
+            orange_sup:start_link();
         {error, Reason} ->
             {error, Reason}
     end.
