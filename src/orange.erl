@@ -28,7 +28,7 @@
 %%
 
 %% @doc starts the application w/ crypto.
-start(_Type, StartArgs) ->
+start(_Type, _StartArgs) ->
     case start_apps([crypto, sasl]) of
         ok ->
             orange_sup:start_link();
