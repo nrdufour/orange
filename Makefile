@@ -1,27 +1,26 @@
-ERL        ?= erl 
+ERL          ?= erl
+ERLC	     ?= erlc
+APP          := orange
 
-#EBIN_DIRS  := $(wildcard deps/*/ebin)
-ERLC_FLAGS := -W $(INCLUDE_DIRS:%=-I %) $(EBIN_DIRS:%=-pa %)
-APP        := orange
-
-all:
+#all: deps docs
+all: docs
 	./rebar compile
 
-doc: all
-	@mkdir -p doc
-	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}]'
+#deps:
+#	./rebar get-deps
 
-test: all 
+docs:
+	@mkdir -p doc/api
+	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}, {dir, "./doc/api"}]'
+
+test: all
+	@$(ERLC) -o t/ t/etap.erl
 	prove t/*.t
 
-cover: all 
-	rm -f cover/*.coverdata
-	COVER=1 COVER_BIN=./ebin prove t/*.t
-	SRC=./src/ \
-		erl -noshell \
-		-eval 'etap_report:create()' \
-		-s init stop  > /dev/null 2>&1
+cover: all
+	COVER=1 prove t/*.t
+	@$(ERL) -detached -noshell -eval 'etap_report:create()' -s init stop
 
-clean:
+clean: 
 	./rebar clean
-
+	@rm -f t/*.beam
