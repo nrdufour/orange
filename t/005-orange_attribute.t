@@ -1,25 +1,25 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin
+%%! -pa ./ebin -pa ./t
 
 main(_) ->
     etap:plan(unknown),
-    etap_can:loaded_ok(orange_attribute, "Module 'orange_attribute' loaded."),
-    etap_can:has_attrib(orange_attribute, behavior),
-    etap_can:is_attrib(orange_attribute, behavior, gen_server),
-    etap_can:can_ok(orange_attribute, create),
-    etap_can:can_ok(orange_attribute, create, 2),
-    etap_can:can_ok(orange_attribute, create, 3),
-    etap_can:can_ok(orange_attribute, hibern),
-    etap_can:can_ok(orange_attribute, hibern, 2),
-    etap_can:can_ok(orange_attribute, awake),
-    etap_can:can_ok(orange_attribute, awake, 2),
-    etap_can:can_ok(orange_attribute, destroy),
-    etap_can:can_ok(orange_attribute, destroy, 2),
-    etap_can:can_ok(orange_attribute, resur),
-    etap_can:can_ok(orange_attribute, resur, 2),
-    etap_can:can_ok(orange_attribute, purge),
-    etap_can:can_ok(orange_attribute, purge, 2),
+    etap:loaded_ok(orange_attribute, "Module 'orange_attribute' loaded."),
+    etap:has_attrib(orange_attribute, behavior),
+    etap:is_attrib(orange_attribute, behavior, gen_server),
+    etap:can_ok(orange_attribute, create),
+    etap:can_ok(orange_attribute, create, 2),
+    etap:can_ok(orange_attribute, create, 3),
+    etap:can_ok(orange_attribute, hibern),
+    etap:can_ok(orange_attribute, hibern, 2),
+    etap:can_ok(orange_attribute, awake),
+    etap:can_ok(orange_attribute, awake, 2),
+    etap:can_ok(orange_attribute, destroy),
+    etap:can_ok(orange_attribute, destroy, 2),
+    etap:can_ok(orange_attribute, resur),
+    etap:can_ok(orange_attribute, resur, 2),
+    etap:can_ok(orange_attribute, purge),
+    etap:can_ok(orange_attribute, purge, 2),
 
     application:start(orange),
     orange_storage_server:init_storage(),

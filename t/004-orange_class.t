@@ -1,18 +1,18 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin
+%%! -pa ./ebin -pa ./t
 
 main(_) ->
     etap:plan(unknown),
-    etap_can:loaded_ok(orange_class, "Module 'orange_class' loaded."),
-    etap_can:has_attrib(orange_class, behavior),
-    etap_can:is_attrib(orange_class, behavior, gen_server),
-    etap_can:can_ok(orange_class, create, 1),
-    etap_can:can_ok(orange_class, hibern, 1),
-    etap_can:can_ok(orange_class, awake, 1),
-    etap_can:can_ok(orange_class, destroy, 1),
-    etap_can:can_ok(orange_class, resur, 1),
-    etap_can:can_ok(orange_class, purge, 1),
+    etap:loaded_ok(orange_class, "Module 'orange_class' loaded."),
+    etap:has_attrib(orange_class, behavior),
+    etap:is_attrib(orange_class, behavior, gen_server),
+    etap:can_ok(orange_class, create, 1),
+    etap:can_ok(orange_class, hibern, 1),
+    etap:can_ok(orange_class, awake, 1),
+    etap:can_ok(orange_class, destroy, 1),
+    etap:can_ok(orange_class, resur, 1),
+    etap:can_ok(orange_class, purge, 1),
 
     application:start(orange),
     orange_storage_server:init_storage(),

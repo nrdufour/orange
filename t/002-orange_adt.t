@@ -1,6 +1,6 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin
+%%! -pa ./ebin -pa ./t
 
 test_matrix_element({FromState, [{Operation, ToState}|Rest]}) ->
     Message = io_lib:format("\t~-8s[~-10s] -> ~p", [Operation, FromState, ToState]),
@@ -35,14 +35,14 @@ test_new_state_after() ->
 main(_) ->
     etap:plan(unknown),
     
-    etap_can:loaded_ok(orange_adt, "Module 'orange_adt' loaded"),
+    etap:loaded_ok(orange_adt, "Module 'orange_adt' loaded"),
 
-    etap_can:can_ok(orange_adt, new_adt),
-    etap_can:can_ok(orange_adt, new_adt, 2),
-    etap_can:can_ok(orange_adt, new_state_after),
-    etap_can:can_ok(orange_adt, new_state_after, 2),
-    etap_can:can_ok(orange_adt, is_ready_for),
-    etap_can:can_ok(orange_adt, is_ready_for, 2),
+    etap:can_ok(orange_adt, new_adt),
+    etap:can_ok(orange_adt, new_adt, 2),
+    etap:can_ok(orange_adt, new_state_after),
+    etap:can_ok(orange_adt, new_state_after, 2),
+    etap:can_ok(orange_adt, is_ready_for),
+    etap:can_ok(orange_adt, is_ready_for, 2),
 
     %%ClassID = { adt_id, class, { 0 } },
     %%ClassName = "Bridge",

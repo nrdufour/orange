@@ -1,5 +1,6 @@
 doc/
 ebin/
+*.beam
 *.swp
 *.dump
 cover

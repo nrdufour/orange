@@ -1,25 +1,25 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin
+%%! -pa ./ebin -pa ./t
 
 main(_) ->
     etap:plan(unknown),
-    etap_can:loaded_ok(orange_link, "Module 'orange_link' loaded."),
-    etap_can:has_attrib(orange_link, behavior),
-    etap_can:is_attrib(orange_link, behavior, gen_server),
-    etap_can:can_ok(orange_link, create),
-    etap_can:can_ok(orange_link, create, 3),
-    etap_can:can_ok(orange_link, create, 4),
-    etap_can:can_ok(orange_link, hibern),
-    etap_can:can_ok(orange_link, hibern, 3),
-    etap_can:can_ok(orange_link, awake),
-    etap_can:can_ok(orange_link, awake, 3),
-    etap_can:can_ok(orange_link, destroy),
-    etap_can:can_ok(orange_link, destroy, 3),
-    etap_can:can_ok(orange_link, resur),
-    etap_can:can_ok(orange_link, resur, 3),
-    etap_can:can_ok(orange_link, purge),
-    etap_can:can_ok(orange_link, purge, 3),
+    etap:loaded_ok(orange_link, "Module 'orange_link' loaded."),
+    etap:has_attrib(orange_link, behavior),
+    etap:is_attrib(orange_link, behavior, gen_server),
+    etap:can_ok(orange_link, create),
+    etap:can_ok(orange_link, create, 3),
+    etap:can_ok(orange_link, create, 4),
+    etap:can_ok(orange_link, hibern),
+    etap:can_ok(orange_link, hibern, 3),
+    etap:can_ok(orange_link, awake),
+    etap:can_ok(orange_link, awake, 3),
+    etap:can_ok(orange_link, destroy),
+    etap:can_ok(orange_link, destroy, 3),
+    etap:can_ok(orange_link, resur),
+    etap:can_ok(orange_link, resur, 3),
+    etap:can_ok(orange_link, purge),
+    etap:can_ok(orange_link, purge, 3),
 
     application:start(orange),
     orange_storage_server:init_storage(),
