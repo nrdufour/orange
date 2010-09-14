@@ -31,10 +31,22 @@
 start(_Type, _StartArgs) ->
     case start_apps([crypto, sasl]) of
         ok ->
-            orange_sup:start_link();
+            DataDir = get_data_dir(),
+            orange_sup:start_link(DataDir);
         {error, Reason} ->
             {error, Reason}
     end.
+
+get_data_dir() ->
+    {ok, CurrentDir} = file:get_cwd(),
+    Candidate = filename:join(CurrentDir, "data"),
+    IsDir = filelib:is_dir(Candidate),
+    DataDir = if IsDir ->
+        Candidate;
+    true ->
+        "/tmp"
+    end,
+    DataDir.
 
 %% @doc stops the application.
 stop(_State) ->

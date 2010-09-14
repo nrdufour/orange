@@ -19,12 +19,12 @@
 -behavior(supervisor).
 -author('Nicolas R Dufour <nrdufour@gmail.com>').
 
--export([start_link/0, init/1]).
+-export([start_link/1, init/1]).
 
-start_link() ->
-    supervisor:start_link(?MODULE, nil).
+start_link(DataDir) ->
+    supervisor:start_link(?MODULE, DataDir).
 
-init(_InitArgs) ->
+init(DataDir) ->
     %% Install my personal error handler
     %%gen_event:swap_handler(alarm_handler,
     %%            {alarm_handler, swap},
@@ -59,7 +59,7 @@ init(_InitArgs) ->
 	    [orange_object]},
     
     StorageManager = {orange_storage_server,
-            {orange_storage_server, start_link, []},
+            {orange_storage_server, start_link, [DataDir]},
             permanent,
             10000,
             worker,

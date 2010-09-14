@@ -18,14 +18,14 @@
 -module(orange_storage_server).
 -behavior(gen_server).
 
--export([store/3, load/2, clear/2, init_storage/0, start_link/0, dump/0]).
+-export([store/3, load/2, clear/2, init_storage/0, start_link/1, dump/0]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
     terminate/2, code_change/3]).
 
-start_link() ->
-    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+start_link(DataDir) ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [DataDir], []).
 
 %% @doc create/update a new entry.
 store(Type, Id, Data) ->
@@ -47,44 +47,57 @@ init_storage() ->
 dump() ->
     gen_server:call(?MODULE, {dump}).
 
-init([]) ->
+%% internal state
+-record(internal, {
+	datadir = "/tmp",
+	datafile
+}).
+
+init(DataDir) ->
     process_flag(trap_exit, true),
     io:format("~p starting~n", [?MODULE]),
 
-    %% opening dets files
-    %% FIXME need a nice way to configure the path of those files
-    dets:open_file(orange.dets, [{type, set}]),
+    DataFile = filename:join(DataDir, "orange_repository.dat"),
+    Internal = #internal{ datadir = DataDir, datafile = DataFile},
 
-    {ok, []}.
+    %% opening dets files
+    {ok, _Reference} = dets:open_file(DataFile, [{type, set}]),
+
+    {ok, Internal}.
 
 handle_call({store, {Header, Data}}, _From, State) ->
-    Reply = case dets:insert(orange.dets, {Header, Data}) of
+    DataFile = State#internal.datafile,
+    Reply = case dets:insert(DataFile, {Header, Data}) of
         {error, Reason} -> Reason;
         ok -> ok
     end,
     {reply, Reply, State};
 
 handle_call({load, Header}, _From, State) ->
-    Reply = case dets:lookup(orange.dets, Header) of
+    DataFile = State#internal.datafile,
+    Reply = case dets:lookup(DataFile, Header) of
         [{_ReturnedHeader, Data}] -> Data;
         _ -> not_found
     end,
     {reply, Reply, State};
 
 handle_call({clear, Header}, _From, State) ->
-    Reply = case dets:lookup(orange.dets, Header) of
+    DataFile = State#internal.datafile,
+    Reply = case dets:lookup(DataFile, Header) of
         [{_ReturnedHeader, _Data}] -> dets:delete(orange.dets, Header);
         _ -> not_found
     end,
     {reply, Reply, State};
 
 handle_call({init_storage}, _From, State) ->
-    Reply = dets:delete_all_objects(orange.dets),
+    DataFile = State#internal.datafile,
+    Reply = dets:delete_all_objects(DataFile),
     {reply, Reply, State};
 
 handle_call({dump}, _From, State) ->
+    DataFile = State#internal.datafile,
     dets:traverse(
-        orange.dets,
+        DataFile,
         fun(X) -> io:format("~p~n", [X]), continue end),
     {reply, ok, State}.
 
@@ -92,12 +105,13 @@ handle_cast(_Msg, State) -> {noreply, State}.
 
 handle_info(_Info, State) -> {noreply, State}.
 
-terminate(_Reason, _State) ->
+terminate(_Reason, State) ->
+    DataFile = State#internal.datafile,
     io:format("~p stopping~n", [?MODULE]),
 
     %% closing the files
     %% FIXME still need a way to configure the path
-    dets:close(orange.dets),
+    dets:close(DataFile),
 
     ok.
 
