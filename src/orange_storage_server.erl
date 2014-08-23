@@ -84,7 +84,7 @@ handle_call({load, Header}, _From, State) ->
 handle_call({clear, Header}, _From, State) ->
     DataFile = State#internal.datafile,
     Reply = case dets:lookup(DataFile, Header) of
-        [{_ReturnedHeader, _Data}] -> dets:delete(orange.dets, Header);
+        [{_ReturnedHeader, _Data}] -> dets:delete(DataFile, Header);
         _ -> not_found
     end,
     {reply, Reply, State};
