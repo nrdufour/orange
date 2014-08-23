@@ -2,3 +2,4 @@ language: erlang
 otp_release:
    - 17.1
    - R16B03
+   - R15B03
