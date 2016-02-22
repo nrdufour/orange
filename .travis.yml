@@ -4,3 +4,6 @@ otp_release:
   - 17.5
 script:
   - make tests
+branches:
+  except:
+    - original
