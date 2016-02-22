@@ -15,22 +15,14 @@
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
 %% @copyright 2009-2016 Nicolas R Dufour.
 
--module(orange_sup).
--behaviour(supervisor).
+-module(orange_app).
+-behaviour(application).
 
--export([start_link/0]).
--export([init/1]). 
+-export([start/2]).
+-export([stop/1]).
 
-%% Helper macro for declaring children of supervisor
--define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
+start(_Type, _Args) ->
+	orange_sup:start_link().
 
-start_link() ->
-	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
-
-init([]) ->
-	Procs = [
-            ?CHILD(orange_executer, worker),
-			{orange_storage_server, {orange_storage_server, start_link, ["/tmp"]}, permanent, 5000, worker, [orange_storage_server]}
-        ],
-	io:format("Starting sup with ~p~n", [Procs]),
-	{ok, {{one_for_one, 1, 5}, Procs}}.
+stop(_State) ->
+	ok.

@@ -1,4 +1,4 @@
-%% Copyright 2009-2010 Nicolas R Dufour.
+%% Copyright 2009-2016 Nicolas R Dufour.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -13,20 +13,19 @@
 %% limitations under the License.
 %%
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
-%% @copyright 2009-2010 Nicolas R Dufour.
+%% @copyright 2009-2016 Nicolas R Dufour.
 
--type adtType()  :: class | attribute | link | object.
+-type adtType()  :: class_t | attribute_t | link_t | object_t.
 -type adtNames() :: [string()].
 -type adtState() :: alive | frozen | destroyed | none.
 
 -record(meta, {
-    type  = unknown :: adtType(),
-    names = []      :: adtNames(),
-    state = none    :: adtState()
-}).
+		type  = unknown :: adtType(),
+		names = []      :: adtNames(),
+		state = none    :: adtState()
+	}).
 
 -record(adt, {
-    meta,
-    data
-}).
-
+		meta,
+		data
+	}).

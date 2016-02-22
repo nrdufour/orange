@@ -1,4 +1,4 @@
-%% Copyright 2009-2010 Nicolas R Dufour.
+%% Copyright 2009-2016 Nicolas R Dufour.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 %% limitations under the License.
 %%
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
-%% @copyright 2009-2010 Nicolas R Dufour.
+%% @copyright 2009-2016 Nicolas R Dufour.
 
 -module(orange_query).
 -author('Nicolas R Dufour <nrdufour@gmail.com>').

@@ -1,4 +1,4 @@
-%% Copyright 2009-2010 Nicolas R Dufour.
+%% Copyright 2009-2016 Nicolas R Dufour.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
 %% limitations under the License.
 %%
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
-%% @copyright 2009-2010 Nicolas R Dufour.
+%% @copyright 2009-2016 Nicolas R Dufour.
 
-%% @type adtOperation() = create | hibern | awake | destroy | resur | purge
+%% @type adtOperation() = create_op | hibern_op | awake_op | destroy_op | resur_op | purge_op
 %% @type adtState() = alive | frozen | destroyed | none
 
 -module(orange_adt).
@@ -26,17 +26,17 @@
 
 %% @spec new_adt(adt_type(), names()) -> adt()
 %% @doc create a branch adt stucture w/ state = alive.
-new_adt(class, [ClassName]) ->
-    Meta = #meta{type = class, names = [ClassName], state = alive},
+new_adt(class_t, [ClassName]) ->
+    Meta = #meta{type = class_t, names = [ClassName], state = alive},
     #adt{meta = Meta, data = []};
-new_adt(attribute, [ClassName, AttributeName]) ->
-    Meta = #meta{type = attribute, names = [ClassName, AttributeName], state = alive},
+new_adt(attribute_t, [ClassName, AttributeName]) ->
+    Meta = #meta{type = attribute_t, names = [ClassName, AttributeName], state = alive},
     #adt{meta = Meta, data = []};
-new_adt(link, [FromClassName, ToClassName, LinkName]) ->
-    Meta = #meta{type = link, names = [FromClassName, ToClassName, LinkName], state = alive},
+new_adt(link_t, [FromClassName, ToClassName, LinkName]) ->
+    Meta = #meta{type = link_t, names = [FromClassName, ToClassName, LinkName], state = alive},
     #adt{meta = Meta, data = []};
-new_adt(object, [ClassName, ObjectName]) ->
-    Meta = #meta{type = object, names = [ClassName, ObjectName], state = alive},
+new_adt(object_t, [ClassName, ObjectName]) ->
+    Meta = #meta{type = object_t, names = [ClassName, ObjectName], state = alive},
     #adt{meta = Meta, data = []};
 new_adt(_,_) ->
     throw(not_supported_type).
@@ -45,12 +45,12 @@ new_adt(_,_) ->
 %% @doc returns the ADT state following a given operation.
 new_state_after(Operation, State) ->
     case {Operation, State} of
-        {create, none}   -> alive;
-        {hibern, alive}    -> frozen;
-        {awake, frozen}    -> alive;
-        {destroy, alive}   -> destroyed;
-        {resur, destroyed} -> alive;
-        {purge, destroyed} -> none;
+        {create_op, none}   -> alive;
+        {hibern_op, alive}    -> frozen;
+        {awake_op, frozen}    -> alive;
+        {destroy_op, alive}   -> destroyed;
+        {resur_op, destroyed} -> alive;
+        {purge_op, destroyed} -> none;
         {_, _}             -> wrong_state
     end.
 
